@@ -1,11 +1,11 @@
 package com.demo.courier.service;
 
-import com.demo.courier.common.DistanceCalculatorStrategy;
+import com.demo.core.distance.DistanceCalculatorFactory;
+import com.demo.core.distance.DistanceCalculatorStrategy;
+import com.demo.core.enums.DistanceType;
+import com.demo.core.model.GeoLocation;
 import com.demo.courier.entity.CourierTrack;
-import com.demo.courier.factory.DistanceCalculatorFactory;
 import com.demo.courier.mapper.CourierTrackMapper;
-import com.demo.courier.model.GeoLocation;
-import com.demo.courier.model.enums.DistanceType;
 import com.demo.courier.model.request.CourierLocationRequest;
 import com.demo.courier.model.request.CourierTotalDistanceRequest;
 import com.demo.courier.model.response.CourierTotalDistanceResponse;
