@@ -1,5 +1,6 @@
 package com.demo.courier.service;
 
+import com.demo.courier.configuration.properties.KafkaProperties;
 import com.demo.courier.entity.Courier;
 import com.demo.courier.exception.CourierRuntimeException;
 import com.demo.courier.mapper.CourierMapper;
@@ -8,6 +9,7 @@ import com.demo.courier.model.request.CourierCreateRequest;
 import com.demo.courier.model.enums.CourierStatus;
 import com.demo.courier.model.request.CourierLocationRequest;
 import com.demo.courier.repository.CourierRepository;
+import com.demo.courier.service.producer.KafkaEventProducer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,9 @@ public class CourierService {
 
     private final CourierTrackService courierTrackService;
     private final CourierRepository courierRepository;
+
+    private final KafkaEventProducer kafkaEventProducer;
+    private final KafkaProperties kafkaProperties;
 
     private CourierMapper courierMapper;
 
@@ -44,14 +49,19 @@ public class CourierService {
 
     @Transactional
     public void saveCurrentLocation(CourierLocationRequest request) {
-
         courierRepository.findById(request.courierId())
                 .orElseThrow(() -> new CourierRuntimeException("COURIER_IS_NOT_FOUND"));
-
         courierTrackService.saveCourierTrack(request);
-        log.info("Courier track saved");
+        kafkaEventProducer.sendEvent(kafkaProperties.getAddress(), request);
+        log.info("Courier current location was saved. CourierId: {}", request.courierId());
     }
 
     public void updateCourierStatus(Long id, CourierStatus status) {
+        log.info("Courier status update request was received for CourierId : {}", id);
+        Courier courier = courierRepository.findById(id)
+                .orElseThrow(() -> new CourierRuntimeException("COURIER_IS_NOT_FOUND"));
+
+        courier.setStatus(status);
+        courierRepository.save(courier);
     }
 }

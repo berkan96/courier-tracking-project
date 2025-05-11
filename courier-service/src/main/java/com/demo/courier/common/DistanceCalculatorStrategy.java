@@ -1,4 +1,4 @@
-package com.demo.courier.common.distance;
+package com.demo.courier.common;
 
 import com.demo.courier.model.GeoLocation;
 

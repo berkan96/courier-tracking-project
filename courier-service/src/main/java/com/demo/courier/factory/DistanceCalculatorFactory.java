@@ -1,7 +1,7 @@
 package com.demo.courier.factory;
 
-import com.demo.courier.common.distance.DistanceCalculatorStrategy;
-import com.demo.courier.common.distance.HaversineCalculatorStrategy;
+import com.demo.courier.common.DistanceCalculatorStrategy;
+import com.demo.courier.common.HaversineCalculatorStrategy;
 import com.demo.courier.model.enums.DistanceType;
 
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.demo.courier.service;
 
-import com.demo.courier.common.distance.DistanceCalculatorStrategy;
+import com.demo.courier.common.DistanceCalculatorStrategy;
 import com.demo.courier.entity.CourierTrack;
 import com.demo.courier.factory.DistanceCalculatorFactory;
 import com.demo.courier.mapper.CourierTrackMapper;
