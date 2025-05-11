@@ -5,7 +5,7 @@ import com.demo.courier.model.dto.CourierDto;
 import com.demo.courier.model.request.CourierCreateRequest;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CourierMapper {
     Courier createCourierRequestToCourier(CourierCreateRequest request);
 

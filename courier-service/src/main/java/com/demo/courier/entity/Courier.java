@@ -1,6 +1,6 @@
 package com.demo.courier.entity;
 
-import com.demo.courier.model.enums.CourierStatus;
+import com.demo.core.enums.CourierStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

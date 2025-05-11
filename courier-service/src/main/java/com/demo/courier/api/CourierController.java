@@ -1,7 +1,7 @@
 package com.demo.courier.api;
 
+import com.demo.core.enums.CourierStatus;
 import com.demo.courier.model.dto.CourierDto;
-import com.demo.courier.model.enums.CourierStatus;
 import com.demo.courier.model.request.CourierCreateRequest;
 import com.demo.courier.model.request.CourierLocationRequest;
 import com.demo.courier.service.CourierService;
@@ -11,10 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("courier")
+@RequestMapping("/couriers")
+@RestController
 @RequiredArgsConstructor
 public class CourierController {
-    private CourierService courierService;
+    private final CourierService courierService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

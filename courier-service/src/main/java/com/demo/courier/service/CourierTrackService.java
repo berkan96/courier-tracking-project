@@ -3,29 +3,36 @@ package com.demo.courier.service;
 import com.demo.core.distance.DistanceCalculatorFactory;
 import com.demo.core.distance.DistanceCalculatorStrategy;
 import com.demo.core.enums.DistanceType;
+import com.demo.core.event.CourierLocationEvent;
 import com.demo.core.model.GeoLocation;
+import com.demo.courier.configuration.properties.KafkaProperties;
 import com.demo.courier.entity.CourierTrack;
 import com.demo.courier.mapper.CourierTrackMapper;
 import com.demo.courier.model.request.CourierLocationRequest;
 import com.demo.courier.model.request.CourierTotalDistanceRequest;
 import com.demo.courier.model.response.CourierTotalDistanceResponse;
 import com.demo.courier.repository.CourierTrackRepository;
-import lombok.AllArgsConstructor;
+import com.demo.courier.service.producer.KafkaEventProducer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class CourierTrackService {
     private final CourierTrackRepository courierTrackRepository;
     private final CourierTrackMapper courierTrackMapper;
+    private final KafkaEventProducer kafkaEventProducer;
+    private final KafkaProperties kafkaProperties;
 
     public void saveCourierTrack(CourierLocationRequest request) {
         CourierTrack courierTrack = courierTrackMapper.locationRequestToCourierTrack(request);
-        courierTrackRepository.save(courierTrack);
+        courierTrack = courierTrackRepository.save(courierTrack);
+        CourierLocationEvent event = courierTrackMapper.courierTrackToCourierLocationEvent(courierTrack);
+        kafkaEventProducer.sendEvent(kafkaProperties.getTopic().getCourierLocation(), event);
     }
 
     public CourierTotalDistanceResponse getTotalDistance(CourierTotalDistanceRequest request) {

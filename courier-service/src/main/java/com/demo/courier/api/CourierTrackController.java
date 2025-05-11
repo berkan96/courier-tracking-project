@@ -4,12 +4,13 @@ import com.demo.courier.model.request.CourierTotalDistanceRequest;
 import com.demo.courier.model.response.CourierTotalDistanceResponse;
 import com.demo.courier.service.CourierTrackService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
-@RestController("courier-track")
+@RequiredArgsConstructor
+@RequestMapping("/courier-track")
+@RestController
 public class CourierTrackController {
 
     private final CourierTrackService courierTrackService;

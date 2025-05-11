@@ -1,6 +1,6 @@
 package com.demo.courier.model.dto;
 
-import com.demo.courier.model.enums.CourierStatus;
+import com.demo.core.enums.CourierStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
