@@ -41,7 +41,7 @@ public class StoreEntryService {
         StoreEntry storeEntry = new StoreEntry();
         storeEntry.setStoreId(storeId);
         storeEntry.setCourierId(courierId);
-        storeEntry.setCreatedDate(LocalDateTime.now());
+        storeEntry.setPickupDate(LocalDateTime.now());
         storeEntryLogRepository.save(storeEntry);
         log.info("Saved store log entry log");
     }
@@ -66,7 +66,7 @@ public class StoreEntryService {
 
     private boolean shouldLogEntry(Long storeId, LocalDateTime timestamp) {
         return getLastEntryRecord(storeId)
-                .map(lastEntry -> Duration.between(lastEntry.getCreatedDate(), timestamp).toMinutes() > MINUTES)
+                .map(lastEntry -> Duration.between(lastEntry.getPickupDate(), timestamp).toMinutes() > MINUTES)
                 .orElse(true);
     }
 }

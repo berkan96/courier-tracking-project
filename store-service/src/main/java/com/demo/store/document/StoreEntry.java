@@ -27,6 +27,6 @@ public class StoreEntry {
     private Long orderId;
 
     @CreatedDate
-    private LocalDateTime createdDate;
+    private LocalDateTime pickupDate;
 
 }
