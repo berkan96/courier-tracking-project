@@ -43,14 +43,14 @@ public class CourierService {
 
     public CourierDto getCourier(Long id) {
         Courier courier = courierRepository.findById(id)
-                .orElseThrow(() -> new CourierRuntimeException("COURIER_IS_NOT_FOUND"));
+                .orElseThrow(() -> new CourierRuntimeException("Courier is not found"));
         return courierMapper.courierToCourierDto(courier);
     }
 
     @Transactional
     public void saveCurrentLocation(CourierLocationRequest request) {
         courierRepository.findById(request.getCourierId())
-                .orElseThrow(() -> new CourierRuntimeException("COURIER_IS_NOT_FOUND"));
+                .orElseThrow(() -> new CourierRuntimeException("Courier is not found"));
         courierTrackService.saveCourierTrack(request);
         log.info("Courier current location was saved. CourierId: {}", request.getCourierId());
     }
@@ -58,7 +58,7 @@ public class CourierService {
     public void updateCourierStatus(Long id, CourierStatus status) {
         log.info("Courier status update request was received for CourierId : {}", id);
         Courier courier = courierRepository.findById(id)
-                .orElseThrow(() -> new CourierRuntimeException("COURIER_IS_NOT_FOUND"));
+                .orElseThrow(() -> new CourierRuntimeException("Courier is not found"));
 
         courier.setStatus(status);
         courierRepository.save(courier);
