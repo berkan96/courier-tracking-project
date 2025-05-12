@@ -16,7 +16,7 @@ The main technologies I used in the courier tracking system project are listed b
 
 ## Architecture Diagram
 
-![architecture](images/Architecture.jpg)
+![architecture](images/Architecture.png)
 
 ## Running on Your Computer
 
@@ -84,4 +84,4 @@ You can start these tools with the following command:
 }
 ```
 
-![get-total-distance](images/get-total-distancee.png)
+![get-total-distance](images/get-total-distance.png)
