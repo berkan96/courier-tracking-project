@@ -16,7 +16,7 @@ public class CourierLocationEventConsumer {
 
     @KafkaListener(topics = "courier-location", containerFactory = "kafkaListenerContainerFactory")
     public void listenCourierLocation(CourierLocationEvent event) {
-        log.info("Consumed courier location for store proximity {}", event.toString());
+        log.info("Consumed courier location for store {}", event.toString());
         storeEntryService.courierForStore(event);
     }
 }
