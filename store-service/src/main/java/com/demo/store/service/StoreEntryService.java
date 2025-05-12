@@ -2,11 +2,14 @@ package com.demo.store.service;
 
 import com.demo.core.distance.DistanceCalculatorFactory;
 import com.demo.core.distance.DistanceCalculatorStrategy;
+import com.demo.core.enums.CourierStatus;
 import com.demo.core.enums.DistanceType;
 import com.demo.core.event.CourierLocationEvent;
 import com.demo.core.model.GeoLocation;
+import com.demo.store.client.CourierServiceClient;
 import com.demo.store.constant.StoreServiceConstants;
 import com.demo.store.document.StoreEntry;
+import com.demo.store.model.dto.CourierDto;
 import com.demo.store.model.dto.StoreDto;
 import com.demo.store.repository.StoreEntryRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +29,21 @@ public class StoreEntryService {
     private final StoreService storeService;
     private final StoreEntryRepository storeEntryLogRepository;
 
+    private final CourierServiceClient courierServiceClient;
+
     public Optional<StoreEntry> getLastEntryRecord(Long storeId) {
-        return storeEntryLogRepository.findFirstByStoreIdOrderByCreatedDateDesc(storeId);
+        return storeEntryLogRepository.findFirstByStoreIdOrderByPickupDateDesc(storeId);
     }
 
     public void courierForStore(CourierLocationEvent event) {
+        CourierDto courier = Optional.of(courierServiceClient.getCourier(event.getCourierId()).getBody())
+                .orElseThrow(() -> new RuntimeException("Courier not found"));
+
+        if (!CourierStatus.AVAILABLE.equals(courier.getStatus())) {
+            log.info("{} courier is not available", courier.getFirstName());
+            return;
+        }
+
         storeService.getAllStores()
                 .stream()
                 .filter(store -> isWithin100Meters(event, store) && shouldLogEntry(store.getId(), event.getCreatedDate()))

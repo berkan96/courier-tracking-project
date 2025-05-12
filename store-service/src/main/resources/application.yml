@@ -13,6 +13,12 @@ spring:
       host: localhost
       port: 27017
 
+feign:
+  client:
+    config:
+      courier-service:
+        name: courier-service
+        url: http://localhost:8082
 
 kafka:
   groupId : courierLocation
